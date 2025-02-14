@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class AllTagsTest extends TestCase
 {
-    public function tagProvider(): array
+    static function tagProvider(): array
     {
         return [
             ['a'],

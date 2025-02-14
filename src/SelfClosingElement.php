@@ -17,7 +17,7 @@ final class SelfClosingElement implements ElementInterface
         return $this->getOpeningHtml();
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'tag' => $this->tagName,
@@ -25,15 +25,13 @@ final class SelfClosingElement implements ElementInterface
         ];
     }
 
-    public function serialize()
+    public function __serialize()
     {
-        return serialize($this->jsonSerialize());
+        return $this->jsonSerialize();
     }
 
-    public function unserialize($data)
+    public function __unserialize($data)
     {
-        $data = unserialize($data);
-
         $this->tagName = $data['tag'];
         $this->attributes = $data['attributes'];
     }

@@ -50,7 +50,7 @@ final class Element implements ElementInterface, ArrayAccess, IteratorAggregate,
         return sprintf('%s%s</%s>', $this->getOpeningHtml(), $content, $this->tagName);
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'tag' => $this->tagName,
@@ -59,15 +59,13 @@ final class Element implements ElementInterface, ArrayAccess, IteratorAggregate,
         ];
     }
 
-    public function serialize()
+    public function __serialize()
     {
-        return serialize($this->jsonSerialize());
+        return $this->jsonSerialize();
     }
 
-    public function unserialize($data)
+    public function __unserialize($data)
     {
-        $data = unserialize($data);
-
         $this->tagName = $data['tag'];
         $this->attributes = $data['attributes'];
         $this->children = $data['children'];
@@ -82,17 +80,17 @@ final class Element implements ElementInterface, ArrayAccess, IteratorAggregate,
         return $this;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->children[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->children[$offset] ?? null;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($value === null) {
             return;
@@ -120,6 +118,7 @@ final class Element implements ElementInterface, ArrayAccess, IteratorAggregate,
         unset($this->children[$offset]);
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->children);

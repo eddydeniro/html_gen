@@ -32,7 +32,7 @@ final class StringElement implements ElementInterface
         return $this;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'tag' => 'raw',
@@ -40,15 +40,13 @@ final class StringElement implements ElementInterface
         ];
     }
 
-    public function serialize()
+    public function __serialize()
     {
-        return serialize($this->jsonSerialize());
+        return $this->jsonSerialize();
     }
 
-    public function unserialize($data)
+    public function __unserialize($data)
     {
-        $data = unserialize($data);
-
         $this->children = $data['children'];
     }
 }
